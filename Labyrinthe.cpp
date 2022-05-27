@@ -19,12 +19,30 @@ namespace TP1
 //	Méthodes à implémenter
 // --------------------------
 
-    Labyrinthe::Labyrinthe(){}
+/**
+ * \fn	Labyrinthe::Labyrinthe()
+ * \brief Constructeur de la classe Labyrinthe
+ * \param[in]	p La pièce à vérifier
+ */
+    Labyrinthe::Labyrinthe(): depart(nullptr), arrivee(nullptr), dernier(nullptr){}
 
+/**
+ * \fn	Labyrinthe::Labyrinthe(const Labyrinthe& source)
+ * \brief Constructeur copie de la classe Labyrinthe
+ * \param[in]	source Le labyrinthe à copier
+ */
     Labyrinthe::Labyrinthe(const Labyrinthe& source){}
-
+/**
+ * \fn	Labyrinthe::~Labyrinthe()
+ * \brief Destructeur de la classe Labyrinthe
+ */
     Labyrinthe::~Labyrinthe() {}
 
+/**
+ * \fn	Labyrinthe::Labyrinthe(const Labyrinthe& source)
+ * \brief Surcharge de l'opérateur assignation de la classe Labyrinthe
+ * \param[in]	source Le labyrinthe à assigner
+ */
     const Labyrinthe& Labyrinthe::operator =(const Labyrinthe& source) {
      return *this;
     }
@@ -229,25 +247,60 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
 
     int Labyrinthe::solutionner(Couleur joueur) {
         return 0;
-    }
+ }
 
     Couleur Labyrinthe::trouveGagnant() {
         Couleur gagnant = Aucun;
         return gagnant;
-    }
+ }
 
+/**
+ * \fn	Labyrinthe::appartient(const Piece& p)
+ * \brief vérifie si une pièce avec le même nom se trouve déjà dans le labyrinthe
+ * \param[in]	p La pièce à vérifier
+ */
     bool Labyrinthe::appartient(const Piece& p) const {
-        return true;
-    }
+     for (auto i = dernier->suivant; i != dernier; i = i->suivant){
+         if (i->piece.getNom() == p.getNom()) return true;
+     }
+        return false;
+ }
 
-    void Labyrinthe::placeDepart(const std::string& nom) {}
-
-    void Labyrinthe::placeArrivee(const std::string& nom) {}
+/**
+ * \fn	Labyrinthe::placeDepart(const std::string& nom)
+ * \brief Ajuste le pointeur depart d'un labyrinthe pour qu'il contienne l'adresse de la pièce correspondant au nom spécifié par nom
+ * \param[in]	nom Le nom de la pièce départ
+ * \except logic_error si aucune pièce du labyrinthe ne porte le nom nom
+ */
+    void Labyrinthe::placeDepart(const std::string& nom) {
+     for (auto p = dernier->suivant; p != dernier; p = p->suivant){
+         if (p->piece.getNom() == nom) {
+             depart = p;
+             return;
+         }
+     }
+     throw logic_error("placeDepart: nom introuvable dans le labyrinthe");
+ }
+/**
+ * \fn	Labyrinthe::placeArrivee(const std::string& nom)
+ * \brief Ajuste le pointeur arrivee d'un labyrinthe pour qu'il contienne l'adresse de la pièce correspondant au nom spécifié par nom
+ * \param[in]	nom Le nom de la pièce arrivée
+ * \except logic_error si aucune pièce du labyrinthe ne porte le nom nom
+ */
+    void Labyrinthe::placeArrivee(const std::string& nom) {
+     for (auto p = dernier->suivant; p != dernier; p = p->suivant){
+         if (p->piece.getNom() == nom) {
+             arrivee = p;
+             return;
+         }
+     }
+     throw logic_error("placeArrivee: nom introuvable dans le labyrinthe");
+ }
 
     Labyrinthe::NoeudListePieces* Labyrinthe::trouvePiece(const std::string& nom) const {
         Labyrinthe::NoeudListePieces* sentinelle = dernier;
         return sentinelle;
-    }
+ }
 
  //Mettez l'implémentation de vos autres méthodes ici.
 
