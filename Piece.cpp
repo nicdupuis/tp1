@@ -15,19 +15,26 @@ namespace TP1
 
     Piece::Piece(){}
 
-    Piece::Piece(const std::string & s){}
+    Piece::Piece(const std::string & s): nom(s){}
 
-    Piece::Piece(const Piece& source){}
+    Piece::Piece(const Piece& source): nom(source.nom){}
 
     Piece::~Piece(){}
 
     const Piece& Piece::operator =(const Piece& source){
+        if (&source != this){
+            nom = source.nom;
+        }
         return *this;
     }
 
-    void Piece::setParcourue(bool p){}
+    void Piece::setParcourue(bool p){
+        parcourue = p;
+    }
 
-    void Piece::setDistanceDuDebut(int d){}
+    void Piece::setDistanceDuDebut(int d){
+        distanceDuDebut = d;
+    }
 
     void Piece::ajoutePorte(const Porte& p){}
 
