@@ -15,6 +15,7 @@
 #include <sstream> // lecture/écriture dans un string, voir la méthode chargeLabyrinthe() fournie
 #include <string>
 #include <queue>	// Pour utiliser la file de la STL afin de solutionner le labyrinthe
+#include <algorithm> //min
 
 #include "Porte.h"
 #include "Piece.h"
@@ -130,6 +131,7 @@ private:
 			NoeudListePieces *suivant;
 	};
 
+    void enfiler(NoeudListePieces p, int count);
 
 	//Méthode privée. Retourne l'adresse du noeud de la liste de pièces contenue dans le labyrinthe
 	//qui correspond à la pièce portant le nom nom, la méthode doit lancer une exception invalid_argument si le nom de
@@ -144,6 +146,7 @@ private:
 	Piece *depart; /*!< Adresse de la pièce de départ (et non du noeud qui la contient) */
 	Piece *arrivee; /*!< Adresse de la pièce d'arrivée (et non du noeud qui la contient) */
 
+    std::queue<NoeudListePieces> file;
 
 };
 

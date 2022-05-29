@@ -43,6 +43,7 @@ namespace TP1
  * \fn	Piece& Piece::operator =(const Piece& source)
  * \brief Surcharge de l'opérateur assignation de la classe Piece
  * \param[in]	source La pièce à assigner à l'objet courant
+ * \return Le nouvel objet courant
  */
     const Piece& Piece::operator =(const Piece& source){
         if (&source != this){
