@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(TP1)
+project(tp1_ift2008)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
@@ -12,4 +12,4 @@ set(SOURCE_FILES
     Porte.h
     Principal.cpp)
 
-add_executable(TP1 ${SOURCE_FILES})
+add_executable(tp1_ift2008 ${SOURCE_FILES})
