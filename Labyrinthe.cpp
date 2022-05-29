@@ -292,7 +292,7 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
         int rouge = solutionner(Rouge);
         int bleu = solutionner(Bleu);
         int vert = solutionner(Vert);
-        
+
         Couleur gagnant = Aucun;
         return gagnant;
  }
