@@ -17,7 +17,7 @@ namespace TP1
  * \fn	Porte::Porte()
  * \brief Constructeur par défaut de la classe Porte
  */
-    Porte::Porte(): color(Aucun), destination(nullptr){}
+    Porte::Porte(): color(Aucun){}
 
 /**
  * \fn	Porte::Porte(Couleur c, Piece* d)

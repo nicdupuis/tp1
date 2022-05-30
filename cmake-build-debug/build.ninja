@@ -39,7 +39,7 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = /home/etudiant/CLionProjects/tp1/tp1_ift2008/cmake-build-debug/
+cmake_ninja_workdir = /home/etudiant/CLionProjects/tp1_ift2008/cmake-build-debug/
 # =============================================================================
 # Object build statements for EXECUTABLE target tp1_ift2008
 
@@ -49,25 +49,25 @@ cmake_ninja_workdir = /home/etudiant/CLionProjects/tp1/tp1_ift2008/cmake-build-d
 
 build cmake_object_order_depends_target_tp1_ift2008: phony || CMakeFiles/tp1_ift2008.dir
 
-build CMakeFiles/tp1_ift2008.dir/Labyrinthe.cpp.o: CXX_COMPILER__tp1_ift2008_Debug /home/etudiant/CLionProjects/tp1/tp1_ift2008/Labyrinthe.cpp || cmake_object_order_depends_target_tp1_ift2008
+build CMakeFiles/tp1_ift2008.dir/Labyrinthe.cpp.o: CXX_COMPILER__tp1_ift2008_Debug /home/etudiant/CLionProjects/tp1_ift2008/Labyrinthe.cpp || cmake_object_order_depends_target_tp1_ift2008
   DEP_FILE = CMakeFiles/tp1_ift2008.dir/Labyrinthe.cpp.o.d
   FLAGS = -std=c++11 -g
   OBJECT_DIR = CMakeFiles/tp1_ift2008.dir
   OBJECT_FILE_DIR = CMakeFiles/tp1_ift2008.dir
 
-build CMakeFiles/tp1_ift2008.dir/Piece.cpp.o: CXX_COMPILER__tp1_ift2008_Debug /home/etudiant/CLionProjects/tp1/tp1_ift2008/Piece.cpp || cmake_object_order_depends_target_tp1_ift2008
+build CMakeFiles/tp1_ift2008.dir/Piece.cpp.o: CXX_COMPILER__tp1_ift2008_Debug /home/etudiant/CLionProjects/tp1_ift2008/Piece.cpp || cmake_object_order_depends_target_tp1_ift2008
   DEP_FILE = CMakeFiles/tp1_ift2008.dir/Piece.cpp.o.d
   FLAGS = -std=c++11 -g
   OBJECT_DIR = CMakeFiles/tp1_ift2008.dir
   OBJECT_FILE_DIR = CMakeFiles/tp1_ift2008.dir
 
-build CMakeFiles/tp1_ift2008.dir/Porte.cpp.o: CXX_COMPILER__tp1_ift2008_Debug /home/etudiant/CLionProjects/tp1/tp1_ift2008/Porte.cpp || cmake_object_order_depends_target_tp1_ift2008
+build CMakeFiles/tp1_ift2008.dir/Porte.cpp.o: CXX_COMPILER__tp1_ift2008_Debug /home/etudiant/CLionProjects/tp1_ift2008/Porte.cpp || cmake_object_order_depends_target_tp1_ift2008
   DEP_FILE = CMakeFiles/tp1_ift2008.dir/Porte.cpp.o.d
   FLAGS = -std=c++11 -g
   OBJECT_DIR = CMakeFiles/tp1_ift2008.dir
   OBJECT_FILE_DIR = CMakeFiles/tp1_ift2008.dir
 
-build CMakeFiles/tp1_ift2008.dir/Principal.cpp.o: CXX_COMPILER__tp1_ift2008_Debug /home/etudiant/CLionProjects/tp1/tp1_ift2008/Principal.cpp || cmake_object_order_depends_target_tp1_ift2008
+build CMakeFiles/tp1_ift2008.dir/Principal.cpp.o: CXX_COMPILER__tp1_ift2008_Debug /home/etudiant/CLionProjects/tp1_ift2008/Principal.cpp || cmake_object_order_depends_target_tp1_ift2008
   DEP_FILE = CMakeFiles/tp1_ift2008.dir/Principal.cpp.o.d
   FLAGS = -std=c++11 -g
   OBJECT_DIR = CMakeFiles/tp1_ift2008.dir
@@ -94,7 +94,7 @@ build tp1_ift2008: CXX_EXECUTABLE_LINKER__tp1_ift2008_Debug CMakeFiles/tp1_ift20
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/etudiant/CLionProjects/tp1/tp1_ift2008/cmake-build-debug && /home/etudiant/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/221.5080.224/bin/cmake/linux/bin/ccmake -S/home/etudiant/CLionProjects/tp1/tp1_ift2008 -B/home/etudiant/CLionProjects/tp1/tp1_ift2008/cmake-build-debug
+  COMMAND = cd /home/etudiant/CLionProjects/tp1_ift2008/cmake-build-debug && /home/etudiant/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/221.5080.224/bin/cmake/linux/bin/ccmake -S/home/etudiant/CLionProjects/tp1_ift2008 -B/home/etudiant/CLionProjects/tp1_ift2008/cmake-build-debug
   DESC = Running CMake cache editor...
   pool = console
   restat = 1
@@ -106,7 +106,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/etudiant/CLionProjects/tp1/tp1_ift2008/cmake-build-debug && /home/etudiant/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/221.5080.224/bin/cmake/linux/bin/cmake --regenerate-during-build -S/home/etudiant/CLionProjects/tp1/tp1_ift2008 -B/home/etudiant/CLionProjects/tp1/tp1_ift2008/cmake-build-debug
+  COMMAND = cd /home/etudiant/CLionProjects/tp1_ift2008/cmake-build-debug && /home/etudiant/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/221.5080.224/bin/cmake/linux/bin/cmake --regenerate-during-build -S/home/etudiant/CLionProjects/tp1_ift2008 -B/home/etudiant/CLionProjects/tp1_ift2008/cmake-build-debug
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -122,7 +122,7 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 
 #############################################
-# Folder: /home/etudiant/CLionProjects/tp1/tp1_ift2008/cmake-build-debug
+# Folder: /home/etudiant/CLionProjects/tp1_ift2008/cmake-build-debug
 
 build all: phony tp1_ift2008
 

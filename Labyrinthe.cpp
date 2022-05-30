@@ -24,7 +24,9 @@ namespace TP1
  * \brief Constructeur de la classe Labyrinthe
  * \param[in]	p La pièce à vérifier
  */
-    Labyrinthe::Labyrinthe(): depart(nullptr), arrivee(nullptr), dernier(nullptr){}
+    Labyrinthe::Labyrinthe(): depart(new Piece), arrivee(new Piece), dernier(new NoeudListePieces){
+        dernier->suivant = dernier;
+    }
 
 /**
  * \fn	Labyrinthe::Labyrinthe(const Labyrinthe& source)
@@ -241,31 +243,31 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
             }
         }
     }
-
-
 // -------------------------------
 //	Autres méthodes à implémenter
 // -------------------------------
 
     int Labyrinthe::solutionner(Couleur joueur) {
         int count = 0;
-        NoeudListePieces* noeudDebut = trouvePiece(getDepart()->getNom());
+        auto noeudDebut = trouvePiece(getDepart()->getNom());
         enfiler(*noeudDebut, count);
         NoeudListePieces* pieceVisitee;
-        NoeudListePieces* noeud = noeudDebut;
+        auto noeud = noeudDebut;
         do{
-            pieceVisitee = &file.front();
+            pieceVisitee = &(file.front());
             file.pop();
             ++count;
-
-            //boucle dans la liste de porte de la pieceVisitee, on cherche à enfiler toutes les pieces accessibles par ici
+            //boucle dans la liste de portes de la pieceVisitee, on cherche à enfiler toutes les pieces accessibles par ici
             do{
-            for (auto porte = pieceVisitee->piece.getPortes().begin(); porte != pieceVisitee->piece.getPortes().end(); porte = next(porte)){
-                //si la porte est de la couleur du joueur et que la destination de la pièce à parcourue = false, enfiler la pièce destination
-                if (porte->getCouleur() == joueur && !porte->getDestination()->getParcourue()) enfiler(*trouvePiece(porte->getDestination()->getNom()), count);
+                //si structure vide, begin() n'est pas valide, il est égal à end() et ne peut pas être déréférencer, il faut que je fassse qqch comme if (pieceVisitee->piece.getPortes().empty())
+                if (pieceVisitee->piece.getPortes().empty()) cout << "a!";
+                for (auto porte = pieceVisitee->piece.getPortes().begin(); porte != pieceVisitee->piece.getPortes().end(); porte = next(porte)){
+                    if (pieceVisitee->piece.getPortes().empty()) cout << "vide!";
+                        //si la porte est de la couleur du joueur et que la destination de la pièce à parcourue = false, enfiler la pièce destination
+                    if (porte->getCouleur() == joueur && !porte->getDestination()->getParcourue()) enfiler(*trouvePiece(porte->getDestination()->getNom()), count);
                 }
 
-            //boucle dans les listes de portes de toutes les pièces, cherche destination == pieceVisitee
+                //boucle dans les listes de portes de toutes les pièces, cherche destination == pieceVisitee
                 do{
                     for (auto porte = noeud->piece.getPortes().begin(); porte != pieceVisitee->piece.getPortes().end(); porte = next(porte)){
                         //si la destination de la porte n'est pas parcourue ET si la destination de la porte est la pièce visitée, enfiler cette pièce
@@ -277,14 +279,15 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
             }while(noeudDebut != pieceVisitee);
 
         }while(!file.empty());
+        //pas bon
         if (pieceVisitee->piece.getNom() == getArrivee()->getNom()) return count;
         return -1;
  }
 
- void Labyrinthe::enfiler(NoeudListePieces p, int count){
-        file.push(p);
-        p.piece.setParcourue(true);
-        p.piece.setDistanceDuDebut(count);
+ void Labyrinthe::enfiler(NoeudListePieces piece, int count){
+        file.push(piece);
+        piece.piece.setParcourue(true);
+        piece.piece.setDistanceDuDebut(count);
     }
 
     Couleur Labyrinthe::trouveGagnant() {
@@ -307,7 +310,7 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
      for (auto i = dernier->suivant; i != dernier; i = i->suivant){
          if (i->piece.getNom() == p.getNom()) return true;
      }
-        return false;
+     return false;
  }
 
 /**
@@ -318,14 +321,14 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
  * \except logic_error si aucune pièce du labyrinthe ne porte le nom nom
  */
     void Labyrinthe::placeDepart(const std::string& nom) {
-        //depart = trouvePiece(nom).piece;
-     for (auto p = dernier->suivant; p != dernier; p = p->suivant){
+        depart = &(trouvePiece(nom)->piece);
+ /*    for (auto p = dernier->suivant; p != dernier; p = p->suivant){
          if (p->piece.getNom() == nom) {
              depart = &(p->piece);
              return;
          }
-     }
-     throw logic_error("placeDepart: nom introuvable dans le labyrinthe");
+     }*/
+     //throw logic_error("placeDepart: nom introuvable dans le labyrinthe");
  }
 /**
  * \fn	Labyrinthe::placeArrivee(const std::string& nom)
@@ -335,14 +338,14 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
  * \except logic_error si aucune pièce du labyrinthe ne porte le nom nom
  */
     void Labyrinthe::placeArrivee(const std::string& nom) {
-        //arrivee = trouvePiece(nom).piece;
-     for (auto p = dernier->suivant; p != dernier; p = p->suivant){
+        arrivee = &(trouvePiece(nom)->piece);
+/*     for (auto p = dernier->suivant; p != dernier; p = p->suivant){
          if (p->piece.getNom() == nom) {
              arrivee = &(p->piece);
              return;
          }
-     }
-     throw logic_error("placeArrivee: nom introuvable dans le labyrinthe");
+     }*/
+     //throw logic_error("placeArrivee: nom introuvable dans le labyrinthe");
  }
 
 /**
@@ -354,9 +357,9 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
  */
     Labyrinthe::NoeudListePieces* Labyrinthe::trouvePiece(const std::string& nom) const {
         if (nom.empty()) throw invalid_argument("trouvePiece: le nom entré est vide");
-        Labyrinthe::NoeudListePieces* noeud = dernier;
-        if (noeud->piece.getNom() == nom) return noeud;
-        for (auto p = dernier->suivant; p != dernier; p = p->suivant){
+        Labyrinthe::NoeudListePieces* p = dernier;
+        if (p->piece.getNom() == nom) return p;
+        for (p = dernier->suivant; p != dernier; p = p->suivant){
             if (p->piece.getNom() == nom) return p;
         }
         throw logic_error("trouvePiece: pièce introuvable");

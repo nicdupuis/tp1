@@ -54,7 +54,6 @@ int main()
         cout << "\nChargement du labyrinthe bleu...\n";
 		lab.chargeLabyrinthe(Bleu, entree);
 		entree.close();
-
         entree.open("data/Lab" + reponse + "/jaune" + reponse + ".txt", ios::in);
         if (!entree.is_open())
 		{

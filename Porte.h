@@ -70,7 +70,6 @@ private:
 	Piece * destination; /*!< Vers où la porte mène.*/
 	Couleur color; /*!< Couleur de la porte.*/
 	/*!< Cette couleur spécifie en même temps quel est le joueur qui a le droit de franchir cette porte.*/
-
 };
 
 }

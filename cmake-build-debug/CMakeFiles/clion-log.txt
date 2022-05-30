@@ -1,4 +1,4 @@
-/home/etudiant/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/221.5080.224/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/etudiant/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/221.5080.224/bin/ninja/linux/ninja -G Ninja -S /home/etudiant/CLionProjects/tp1/tp1_ift2008 -B /home/etudiant/CLionProjects/tp1/tp1_ift2008/cmake-build-debug
+/home/etudiant/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/221.5080.224/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/etudiant/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/221.5080.224/bin/ninja/linux/ninja -G Ninja -S /home/etudiant/CLionProjects/tp1_ift2008 -B /home/etudiant/CLionProjects/tp1_ift2008/cmake-build-debug
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/etudiant/CLionProjects/tp1/tp1_ift2008/cmake-build-debug
+-- Build files have been written to: /home/etudiant/CLionProjects/tp1_ift2008/cmake-build-debug

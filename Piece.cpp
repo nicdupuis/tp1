@@ -17,14 +17,14 @@ namespace TP1
  * \fn	Piece::Piece()
  * \brief Constructeur par défaut de la classe Piece
  */
-    Piece::Piece(): nom(""), parcourue(false), distanceDuDebut(0), portes(12){}
+    Piece::Piece(): parcourue(false), distanceDuDebut(0){}
 
 /**
  * \fn	Piece::Piece(const std::string & s)
  * \brief Constructeur avec paramètres de la classe Piece
  * \param[in]	s Le nom de la pièce
  */
-    Piece::Piece(const std::string & s): nom(s), parcourue(false), distanceDuDebut(0), portes(12){}
+    Piece::Piece(const std::string & s): nom(s), parcourue(false), distanceDuDebut(0){}
 
 /**
  * \fn	Piece::Piece(const Piece& source)
