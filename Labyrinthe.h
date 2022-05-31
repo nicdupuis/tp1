@@ -121,6 +121,8 @@ private:
 	//Même chose que pour la fonction placeDepart décrite plus haut, mais pour le pointeur arrivee d'un labyrinthe.
 	void placeArrivee(const std::string& nom);
 
+    void resetParcourue();
+
 	class NoeudListePieces //noeud typique d'une liste chaînée circulaire
 	{
 		public:
@@ -130,8 +132,6 @@ private:
 			// Le noeud suivant
 			NoeudListePieces *suivant;
 	};
-
-    void enfiler(NoeudListePieces p, int count);
 
 	//Méthode privée. Retourne l'adresse du noeud de la liste de pièces contenue dans le labyrinthe
 	//qui correspond à la pièce portant le nom nom, la méthode doit lancer une exception invalid_argument si le nom de
@@ -146,7 +146,7 @@ private:
 	Piece *depart; /*!< Adresse de la pièce de départ (et non du noeud qui la contient) */
 	Piece *arrivee; /*!< Adresse de la pièce d'arrivée (et non du noeud qui la contient) */
 
-    std::queue<NoeudListePieces> file;
+    std::queue<NoeudListePieces*> file;
 
 };
 
