@@ -30,12 +30,20 @@ namespace TP1
  * \brief Constructeur copie de la classe Labyrinthe
  * \param[in]	source Le labyrinthe à copier
  */
-    Labyrinthe::Labyrinthe(const Labyrinthe& source): depart(source.depart), arrivee(source.arrivee), dernier(source.dernier){}
+    Labyrinthe::Labyrinthe(const Labyrinthe& source): depart(nullptr), arrivee(nullptr), dernier(nullptr){
+        if (source.dernier == nullptr) return;
+        recopierListePiece(source.dernier);
+        recopierListePorte(source.dernier);
+        placeDepart(source.depart->getNom());
+        placeArrivee(source.arrivee->getNom());
+    }
 /**
  * \fn	Labyrinthe::~Labyrinthe()
  * \brief Destructeur de la classe Labyrinthe
  */
-    Labyrinthe::~Labyrinthe() {}
+    Labyrinthe::~Labyrinthe() {
+        effacerListePiece();
+    }
 
 /**
  * \fn	Labyrinthe::Labyrinthe(const Labyrinthe& source)
@@ -44,9 +52,63 @@ namespace TP1
  * \return Le nouvel objet courant
  */
     const Labyrinthe& Labyrinthe::operator =(const Labyrinthe& source) {
-     return *this;
+        if(&source == this) return *this;
+        effacerListePiece();
+        recopierListePiece(source.dernier);
+        recopierListePorte(source.dernier);
+        placeDepart(source.depart->getNom());
+        placeArrivee(source.arrivee->getNom());
     }
 
+/**
+ * \fn	Labyrinthe::recopierListePorte(NoeudListePieces *adresse)
+ * \brief Recopie la liste de portes de chaque pièce d'un labyrinthe
+ * \param[in]	*adresse L'adresse de la dernière pièce du labyrinthe source
+ * \post	la liste de portes de chaque pièce est recopiée
+ */
+    void Labyrinthe::recopierListePorte(NoeudListePieces *adresse){
+        if (adresse == nullptr) return;
+        NoeudListePieces *noeud = adresse;
+        do{
+            Piece* courante = &(noeud->piece);
+            for (auto const& porte: courante->getPortes()){
+                ajoutePassage(porte.getCouleur(), courante->getNom()[0], courante->getNom()[2], porte.getDestination()->getNom()[0], porte.getDestination()->getNom()[0]);
+            }
+            noeud = noeud->suivant;
+        }while(noeud != dernier);
+    }
+
+/**
+ * \fn	void Labyrinthe::recopierListePiece(NoeudListePieces *adresse)
+ * \brief Recopie la liste circulaire de pièces d'un autre labyrinthe
+ * \param[in]	*adresse L'adresse de la dernière pièce du labyrinthe source
+ * \post	la liste circulaire est copiée
+ */
+    void Labyrinthe::recopierListePiece(NoeudListePieces *adresse){
+        if (adresse == nullptr) return;
+        NoeudListePieces *noeud = adresse;
+        do{
+            ajoutePieceLabyrinthe(noeud->piece);
+            noeud = noeud->suivant;
+        } while (noeud != adresse);
+    }
+
+/**
+ * \fn	void Labyrinthe::effacerListePiece()
+ * \brief Libérer la mémoire associée aux pièces créées dans la liste de pièces circulaire
+ * \post	la liste circulaire est supprimée
+ */
+    void Labyrinthe::effacerListePiece(){
+        if (dernier == nullptr) return;
+        NoeudListePieces *noeud = dernier;
+        NoeudListePieces *suivant = nullptr;
+        do{
+            suivant = noeud->suivant;
+            delete noeud;
+            noeud = suivant;
+        } while (noeud != dernier);
+        dernier = nullptr;
+    }
 // -------------------------
 //	Méthodes fournies
 // -------------------------
@@ -244,6 +306,14 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
 //	Autres méthodes à implémenter
 // -------------------------------
 
+/**
+ * \fn	int Labyrinthe::solutionner(Couleur joueur)
+ * \brief Solutionne le labyrinthe:
+ *          1. En passant par tous les noeuds accessibles à partir d'un noeud
+ *          2. En enfilant aussi tous les pièces dont une porte de la bonne couleur mène vers la pièce où on se trouve présentement
+ * \param[in]	Couleur La couleur du joueur pour lequel on veut solutionner le labyrinthe
+ * \return L'attribut distanceDuDébut de la pièce d'arrivée ou -1 si le labyrinthe n'est pas solvable
+ */
     int Labyrinthe::solutionner(Couleur joueur) {
         queue<NoeudListePieces*> file;
         auto noeudDebut = trouvePiece(getDepart()->getNom());
@@ -254,6 +324,7 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
         do{
             pieceVisitee = file.front();
             file.pop();
+
             //boucle dans la liste de portes de la pieceVisitee, on cherche à enfiler toutes les pieces accessibles par ici
             for (auto const &porte: pieceVisitee->piece.getPortes()){
                 //si la porte est de la couleur du joueur et que la destination de la pièce à parcourue = false, enfiler la pièce destination
@@ -284,7 +355,7 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
                 return getArrivee()->getDistanceDuDebut();
             }
         }while(!file.empty());
-//ecq la file est vide quand on arrive pour les autres couleurs ?
+
         if (getArrivee()->getParcourue()) {
             resetParcourue();
             return getArrivee()->getDistanceDuDebut();
@@ -293,6 +364,10 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
         return -1;
     }
 
+/**
+ * \fn	void Labyrinthe::resetParcourue()
+ * \brief Remet à 0 l'attribut parcourue de chaque pièce du labyrinthe afin de recommencer à 0
+ */
     void Labyrinthe::resetParcourue() {
         auto noeudDebut = trouvePiece(getDepart()->getNom());
         auto noeud = noeudDebut->suivant;
@@ -303,6 +378,11 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
         }while(noeud != noeudDebut);
     }
 
+/**
+ * \fn	Couleur Labyrinthe::trouveGagnant()
+ * \brief Solutionne le labyrinthe pour chaque couleur de joueur en trouvant le joueur ayant le chemin le moins long à parcourir pour arriver à la fin
+ * \return Couleur du joueur gagnant
+ */
     Couleur Labyrinthe::trouveGagnant() {
         Couleur gagnant = Aucun;
 
@@ -340,11 +420,11 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
  * \return true si la pièce en paramètre appartient déjà au labyrinthe, false sinon
  */
     bool Labyrinthe::appartient(const Piece& p) const {
-      if (this->dernier == nullptr) return false;
-      for (auto i = dernier->suivant; i != dernier; i = i->suivant){
-          if (i->piece.getNom() == p.getNom()) return true;
-     }
-     return false;
+        if (this->dernier == nullptr) return false;
+        for (auto i = dernier->suivant; i != dernier; i = i->suivant){
+            if (i->piece.getNom() == p.getNom()) return true;
+        }
+        return false;
  }
 
 /**
@@ -352,34 +432,20 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
  * \brief Ajuste le pointeur depart d'un labyrinthe pour qu'il contienne l'adresse de la pièce correspondant au nom spécifié par nom
  * \param[in]	nom Le nom de la pièce départ
  * \post Le pointeur Depart est placé
- * \except logic_error si aucune pièce du labyrinthe ne porte le nom nom
+ * \except logic_error si aucune pièce du labyrinthe ne porte le nom nom, pris en charge par la méthode trouvePiece
  */
     void Labyrinthe::placeDepart(const std::string& nom) {
         depart = &(trouvePiece(nom)->piece);
-/*     for (auto p = dernier->suivant; p != dernier; p = p->suivant){
-         if (p->piece.getNom() == nom) {
-             depart = &(p->piece);
-             return;
-         }
-     }*/
-     //throw logic_error("placeDepart: nom introuvable dans le labyrinthe");
  }
 /**
  * \fn	Labyrinthe::placeArrivee(const std::string& nom)
  * \brief Ajuste le pointeur arrivee d'un labyrinthe pour qu'il contienne l'adresse de la pièce correspondant au nom spécifié par nom
  * \param[in]	nom Le nom de la pièce arrivée
  * \post Le pointeur Arrivee est placé
- * \except logic_error si aucune pièce du labyrinthe ne porte le nom nom
+ * \except logic_error si aucune pièce du labyrinthe ne porte le nom nom, pris en charge par la méthode trouvePiece
  */
     void Labyrinthe::placeArrivee(const std::string& nom) {
         arrivee = &(trouvePiece(nom)->piece);
-/*     for (auto p = dernier->suivant; p != dernier; p = p->suivant){
-         if (p->piece.getNom() == nom) {
-             arrivee = &(p->piece);
-             return;
-         }
-     }*/
-     //throw logic_error("placeArrivee: nom introuvable dans le labyrinthe");
  }
 
 /**
@@ -398,7 +464,5 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
         }
         throw logic_error("trouvePiece: pièce introuvable");
  }
-
- //Mettez l'implémentation de vos autres méthodes ici.
 
  }//fin du namespace

@@ -31,7 +31,11 @@ namespace TP1
  * \brief Le constructeur copie de la classe Piece
  * \param[in]	source La pièce à copier
  */
-    Piece::Piece(const Piece& source): nom(source.nom), parcourue(source.parcourue), distanceDuDebut(source.distanceDuDebut), portes(source.portes){}
+    Piece::Piece(const Piece& source): nom(source.nom), parcourue(source.parcourue), distanceDuDebut(source.distanceDuDebut){
+        for (auto const &porte: source.getPortes()){
+            ajoutePorte(porte);
+        }
+    }
 
 /**
  * \fn	Piece::~Piece()
@@ -50,7 +54,9 @@ namespace TP1
             nom = source.nom;
             parcourue = source.parcourue;
             distanceDuDebut = source.distanceDuDebut;
-            portes = source.portes;
+            for (auto const &porte: source.getPortes()){
+                ajoutePorte(porte);
+            }
         }
         return *this;
     }

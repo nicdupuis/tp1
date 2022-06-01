@@ -140,6 +140,12 @@ private:
 	//Remarquez qu'il faut retourner l'adresse du noeud et non l'adresse de la pièce.
 	NoeudListePieces * trouvePiece(const std::string &nom) const;
 
+    void recopierListePorte(NoeudListePieces *adresse);
+
+    void recopierListePiece(NoeudListePieces *adresse);
+
+    void effacerListePiece();
+
 	//
 	NoeudListePieces *dernier; /*!< Le dernier noeud de la liste chaînée circulaire.*/
 	/*!<  Ce noeuds ne contient pas nécessairement les pièces de départ ou d'arrivée. */
