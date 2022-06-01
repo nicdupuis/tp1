@@ -22,18 +22,15 @@ namespace TP1
 /**
  * \fn	Labyrinthe::Labyrinthe()
  * \brief Constructeur de la classe Labyrinthe
- * \param[in]	p La pièce à vérifier
  */
-    Labyrinthe::Labyrinthe(): depart(new Piece), arrivee(new Piece), dernier(new NoeudListePieces){
-        dernier->suivant = dernier;
-    }
+    Labyrinthe::Labyrinthe(): depart(nullptr), arrivee(nullptr), dernier(nullptr){}
 
 /**
  * \fn	Labyrinthe::Labyrinthe(const Labyrinthe& source)
  * \brief Constructeur copie de la classe Labyrinthe
  * \param[in]	source Le labyrinthe à copier
  */
-    Labyrinthe::Labyrinthe(const Labyrinthe& source){}
+    Labyrinthe::Labyrinthe(const Labyrinthe& source): depart(source.depart), arrivee(source.arrivee), dernier(source.dernier){}
 /**
  * \fn	Labyrinthe::~Labyrinthe()
  * \brief Destructeur de la classe Labyrinthe
@@ -248,43 +245,49 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
 // -------------------------------
 
     int Labyrinthe::solutionner(Couleur joueur) {
-        int count = 0;
+        queue<NoeudListePieces*> file;
         auto noeudDebut = trouvePiece(getDepart()->getNom());
         NoeudListePieces* pieceVisitee;
         noeudDebut->piece.setParcourue(true);
-        noeudDebut->piece.setDistanceDuDebut(count);
         file.push(noeudDebut);
         auto noeud = noeudDebut;
         do{
             pieceVisitee = file.front();
             file.pop();
-            ++count;
             //boucle dans la liste de portes de la pieceVisitee, on cherche à enfiler toutes les pieces accessibles par ici
             for (auto const &porte: pieceVisitee->piece.getPortes()){
                 //si la porte est de la couleur du joueur et que la destination de la pièce à parcourue = false, enfiler la pièce destination
                 if ((porte.getCouleur() == joueur) && !(porte.getDestination()->getParcourue())) {
                      porte.getDestination()->setParcourue(true);
-                     porte.getDestination()->setDistanceDuDebut(count);
+                     porte.getDestination()->setDistanceDuDebut(pieceVisitee->piece.getDistanceDuDebut() + 1);
                      file.push(trouvePiece(porte.getDestination()->getNom()));
-                     }
+                    if (getArrivee()->getParcourue()) {
+                        resetParcourue();
+                        return getArrivee()->getDistanceDuDebut();
+                    }
                 }
+            }
                 //boucle dans les listes de portes de toutes les pièces, cherche destination == pieceVisitee
                 do{
                      for (auto const &porte: noeud->piece.getPortes()) {
                         //si la destination de la porte n'est pas parcourue ET si la destination de la porte est la pièce visitée, enfiler cette pièce
-                        if (!(porte.getDestination()->getParcourue()) && (porte.getDestination()->getNom() == pieceVisitee->piece.getNom())) {
-                                porte.getDestination()->setParcourue(true);
-                                porte.getDestination()->setDistanceDuDebut(count);
-                                file.push(trouvePiece(porte.getDestination()->getNom()));
-                            }
+                        if (!(noeud->piece.getParcourue()) && (noeud->piece.getNom() == pieceVisitee->piece.getNom()) && (porte.getCouleur() == joueur)) {
+                            noeud->piece.setParcourue(true);
+                            noeud->piece.setDistanceDuDebut(pieceVisitee->piece.getDistanceDuDebut() + 1);
+                            file.push(noeud);
                         }
+                     }
                     noeud = noeud->suivant;
                 }while(noeud != noeudDebut);
+            if (getArrivee()->getParcourue()) {
+                resetParcourue();
+                return getArrivee()->getDistanceDuDebut();
+            }
         }while(!file.empty());
-
+//ecq la file est vide quand on arrive pour les autres couleurs ?
         if (getArrivee()->getParcourue()) {
             resetParcourue();
-            return count;
+            return getArrivee()->getDistanceDuDebut();
         }
         resetParcourue();
         return -1;
@@ -301,10 +304,10 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
     }
 
     Couleur Labyrinthe::trouveGagnant() {
-        int jaune = solutionner(Jaune);
+        /*int jaune = solutionner(Jaune);
         int rouge = solutionner(Rouge);
         int bleu = solutionner(Bleu);
-        int vert = solutionner(Vert);
+        int vert = solutionner(Vert);*/
 
         Couleur gagnant = Aucun;
         return gagnant;
@@ -317,8 +320,9 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
  * \return true si la pièce en paramètre appartient déjà au labyrinthe, false sinon
  */
     bool Labyrinthe::appartient(const Piece& p) const {
-     for (auto i = dernier->suivant; i != dernier; i = i->suivant){
-         if (i->piece.getNom() == p.getNom()) return true;
+      if (this->dernier == nullptr) return false;
+      for (auto i = dernier->suivant; i != dernier; i = i->suivant){
+          if (i->piece.getNom() == p.getNom()) return true;
      }
      return false;
  }

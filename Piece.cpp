@@ -17,7 +17,7 @@ namespace TP1
  * \fn	Piece::Piece()
  * \brief Constructeur par défaut de la classe Piece
  */
-    Piece::Piece():nom("default"), parcourue(false), distanceDuDebut(0), portes(){}
+    Piece::Piece(): nom(""), parcourue(false), distanceDuDebut(0), portes(){}
 
 /**
  * \fn	Piece::Piece(const std::string & s)
