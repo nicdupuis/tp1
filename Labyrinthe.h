@@ -15,6 +15,7 @@
 #include <sstream> // lecture/écriture dans un string, voir la méthode chargeLabyrinthe() fournie
 #include <string>
 #include <queue>	// Pour utiliser la file de la STL afin de solutionner le labyrinthe
+#include <map>
 #include <algorithm> //min
 
 #include "Porte.h"

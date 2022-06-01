@@ -271,7 +271,7 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
                 do{
                      for (auto const &porte: noeud->piece.getPortes()) {
                         //si la destination de la porte n'est pas parcourue ET si la destination de la porte est la pièce visitée, enfiler cette pièce
-                        if (!(noeud->piece.getParcourue()) && (noeud->piece.getNom() == pieceVisitee->piece.getNom()) && (porte.getCouleur() == joueur)) {
+                        if (!(noeud->piece.getParcourue()) && (porte.getDestination()->getNom() == pieceVisitee->piece.getNom()) && (porte.getCouleur() == joueur)) {
                             noeud->piece.setParcourue(true);
                             noeud->piece.setDistanceDuDebut(pieceVisitee->piece.getDistanceDuDebut() + 1);
                             file.push(noeud);
@@ -304,12 +304,32 @@ void Labyrinthe::chargeLabyrinthe(Couleur couleur, std::ifstream &entree)
     }
 
     Couleur Labyrinthe::trouveGagnant() {
-        /*int jaune = solutionner(Jaune);
+        Couleur gagnant = Aucun;
+
+        int jaune = solutionner(Jaune);
         int rouge = solutionner(Rouge);
         int bleu = solutionner(Bleu);
-        int vert = solutionner(Vert);*/
+        int vert = solutionner(Vert);
 
-        Couleur gagnant = Aucun;
+        if (jaune == -1) jaune = 5000;
+        if (rouge == -1) rouge = 5000;
+        if (bleu == -1) bleu = 5000;
+        if (vert == -1) vert = 5000;
+
+        int minimum = min(jaune, min(rouge, min(bleu, vert)));
+
+        map<Couleur, int> mymap;
+        mymap[Jaune] = jaune;
+        mymap[Rouge] = rouge;
+        mymap[Bleu] = bleu;
+        mymap[Vert] = vert;
+
+        for (auto const& x: mymap){
+            if (x.second == minimum){
+                gagnant = x.first;
+                return gagnant;
+            }
+        }
         return gagnant;
  }
 
